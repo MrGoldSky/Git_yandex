@@ -13,7 +13,7 @@ class MyWidget(QMainWindow):
         self.initUI()
 
     def initUI(self):
-        uic.loadUi('UI.ui', self)
+        uic.loadUi('Git и желтые окружности/UI.ui', self)
         self.setWindowTitle('Git и желтые окружности')
         self.button_paint.clicked.connect(self.paint)
         self.do_paint = False
