@@ -27,9 +27,11 @@ class MyWidget(QMainWindow, Ui_MainWindow):
         self.repaint()
 
     def paint_circle(self, qp):
-        qp.setBrush(QColor("Yellow"))
+        r, g, b = random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
+        R = random.randint(0, 300)
+        qp.setBrush(QColor(r, g, b))
         x, y = random.randint(0, 600), random.randint(0, 600) 
-        qp.drawEllipse(x, y, 100, 100)
+        qp.drawEllipse(x, y, R, R)
 
 
 
