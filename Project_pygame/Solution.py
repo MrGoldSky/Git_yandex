@@ -33,7 +33,28 @@ last_direction = "DOWN"
 now_direction = last_direction
 
 score = 0
-game_run = True
+game_run = False
+
+
+def new_game():
+    global game_run
+    game_over_font_style = pygame.font.SysFont("times new roman", 20)
+    game_over_surface = game_over_font_style.render(
+        "Нажмите ENTER, чтобы начать", True, pygame.Color(255, 255, 255)
+    )
+    game_over_rectangle = game_over_surface.get_rect()
+    game_over_rectangle.midtop = (WIDTH / 2, HEIGHT / 4)
+    display_screen.blit(game_over_surface, game_over_rectangle)
+    pygame.display.flip()
+    
+    while not game_run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    game_run = True
 
 
 def display_score():  
@@ -60,11 +81,12 @@ def game_over():
 
 def connect_to_db():
     try:
-        con = sqlite3.connect("Project_pygame//base//db.sqlite")
+        con = sqlite3.connect("Git_yandex/Project_pygame/base/db.sqlite")
         cur = con.cursor()
         return con, cur
-    except BaseException:
+    except BaseException as e:
         print("Ошибка подключения к БД")
+        print(e)
 
 
 def insert_score(score):
@@ -87,6 +109,8 @@ if __name__ == "__main__":
     display_screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Змейка")
     game_clock = pygame.time.Clock()
+
+    new_game()
 
     while game_run:
         for event in pygame.event.get():
