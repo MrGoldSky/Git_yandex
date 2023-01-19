@@ -1,11 +1,11 @@
 import pygame
 import time
 from time import strftime, gmtime
-import random
+from random import randrange
 import sqlite3
 
 WIDTH = 500
-HEIGHT = 460
+HEIGHT = 500
 
 black = pygame.Color(0, 0, 0)
 white = pygame.Color(255, 255, 255)
@@ -16,7 +16,7 @@ collor_apple = pygame.Color(255, 0, 0)
 snake_speed = 10
 snake_position = [100, 50]
 
-body_of_snake = [
+snake = [
     [100, 50],
     [90, 50],
     [80, 50],
@@ -24,10 +24,10 @@ body_of_snake = [
     ]
 
 apple_position = [
-    random.randrange(1, (WIDTH // 10)) * 10,
-    random.randrange(1, (HEIGHT // 10)) * 10
+    randrange(1, (WIDTH // 10)) * 10,
+    randrange(1, (HEIGHT // 10)) * 10
     ]
-spawning_of_fruit = True
+apple_spawn = True
 
 last_direction = "DOWN"
 now_direction = last_direction
@@ -37,24 +37,28 @@ game_run = False
 
 
 def new_game():
-    global game_run
-    game_over_font_style = pygame.font.SysFont("times new roman", 20)
-    game_over_surface = game_over_font_style.render(
-        "Нажмите ENTER, чтобы начать", True, pygame.Color(255, 255, 255)
-    )
-    game_over_rectangle = game_over_surface.get_rect()
-    game_over_rectangle.midtop = (WIDTH / 2, HEIGHT / 4)
-    display_screen.blit(game_over_surface, game_over_rectangle)
-    pygame.display.flip()
-    
-    while not game_run:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    game_run = True
+    try:
+        global game_run
+        game_over_font = pygame.font.SysFont("times new roman", 20)
+        game_over_surface = game_over_font.render(
+            "Нажмите ENTER, чтобы начать", True, pygame.Color(255, 255, 255)
+        )
+        game_over_screen = game_over_surface.get_rect()
+        game_over_screen.midtop = (WIDTH / 2, HEIGHT / 4)
+        display_screen.blit(game_over_surface, game_over_screen)
+        pygame.display.flip()
+
+        while not game_run:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        game_run = True
+    except BaseException as e:
+        print("Ошибка начала игры")
+        print(e)
 
 
 def display_score():  
@@ -65,13 +69,13 @@ def display_score():
 
 
 def game_over():
-    game_over_font_style = pygame.font.SysFont("times new roman", 50)
-    game_over_surface = game_over_font_style.render(
+    game_over_font = pygame.font.SysFont("times new roman", 50)
+    game_over_surface = game_over_font.render(
         "Очки: " + str(score), True, collor_score
     )
-    game_over_rectangle = game_over_surface.get_rect()
-    game_over_rectangle.midtop = (WIDTH / 2, HEIGHT / 4)
-    display_screen.blit(game_over_surface, game_over_rectangle)
+    game_over_screen = game_over_surface.get_rect()
+    game_over_screen.midtop = (WIDTH / 2, HEIGHT / 4)
+    display_screen.blit(game_over_surface, game_over_screen)
     pygame.display.flip()
     time.sleep(2)
     pygame.quit()
@@ -145,23 +149,23 @@ if __name__ == "__main__":
         if last_direction == "RIGHT":
             snake_position[0] += 10
 
-        body_of_snake.insert(0, list(snake_position))
+        snake.insert(0, list(snake_position))
         if snake_position[0] == apple_position[0] and snake_position[1] == apple_position[1]:
             score += 1
-            spawning_of_fruit = False
+            apple_spawn = False
             snake_speed += 0.2
         else:
-            body_of_snake.pop()
+            snake.pop()
 
-        if not spawning_of_fruit:
+        if not apple_spawn:
             apple_position = [
-                random.randrange(1, (WIDTH // 10)) * 10,
-                random.randrange(1, (HEIGHT // 10)) * 10
+                randrange(1, (WIDTH // 10)) * 10,
+                randrange(1, (HEIGHT // 10)) * 10
             ]
-        spawning_of_fruit = True
+        apple_spawn = True
         display_screen.fill(white)
 
-        for position in body_of_snake:
+        for position in snake:
             pygame.draw.rect(display_screen, collor_snake, pygame.Rect(position[0], position[1], 10, 10))
             pygame.draw.rect(display_screen, collor_apple, pygame.Rect(apple_position[0], apple_position[1], 10, 10))
 
@@ -170,7 +174,7 @@ if __name__ == "__main__":
         if snake_position[1] < 0 or snake_position[1] > HEIGHT - 10:
             game_over()
 
-        for block in body_of_snake[1:]:
+        for block in snake[1:]:
             if snake_position[0] == block[0] and snake_position[1] == block[1]:
                 game_over()
         display_score()
