@@ -1,9 +1,11 @@
+#---Импорт библиотек---
 import pygame
 import time
 from time import strftime, gmtime
 from random import randrange
 import sqlite3
 
+#---Сохранение ---
 WIDTH = 500
 HEIGHT = 500
 
@@ -36,6 +38,7 @@ score = 0
 game_run = False
 
 
+#---Создание новой игры, стартовое окно---
 def new_game():
     try:
         global game_run
@@ -61,6 +64,7 @@ def new_game():
         print(e)
 
 
+#---Обновление очков---
 def update_score():
     try:
         score_font_style = pygame.font.SysFont("Git_yandex/Project_pygame/font/NeueMachina-Light.ttf", 35)
@@ -72,6 +76,7 @@ def update_score():
         print(e)
 
 
+#---Конец игры, финальное окно---
 def game_over():
     try:
         game_over_font = pygame.font.SysFont("Git_yandex/Project_pygame/font/NeueMachina-Light.ttf", 50)
@@ -91,6 +96,7 @@ def game_over():
         print("e")
 
 
+#---Подключение к базе данных---
 def connect_to_db():
     try:
         con = sqlite3.connect("Git_yandex/Project_pygame/base/db.sqlite")
@@ -101,6 +107,7 @@ def connect_to_db():
         print(e)
 
 
+#---Сохранение результатов---
 def insert_score(score):
     con, cur = connect_to_db()
     try:
@@ -116,6 +123,7 @@ def insert_score(score):
         print(e)
 
 
+#---Ранер---
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -126,6 +134,8 @@ if __name__ == "__main__":
     
     try:
         while game_run:
+
+            #---Считывание движения---
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     game_run = False
@@ -140,6 +150,7 @@ if __name__ == "__main__":
                     if event.key == pygame.K_RIGHT:
                         now_direction = "RIGHT"
 
+            #---Движение змеи---
             if now_direction == "UP" and last_direction != "DOWN":
                 last_direction = "UP"
             if now_direction == "DOWN" and last_direction != "UP":
@@ -157,8 +168,9 @@ if __name__ == "__main__":
                 snake_position[0] -= 10
             if last_direction == "RIGHT":
                 snake_position[0] += 10
-
             snake.insert(0, list(snake_position))
+
+            #---Поедание яблок, ускорение змейки---
             if snake_position[0] == apple_position[0] and snake_position[1] == apple_position[1]:
                 score += 1
                 apple_spawn = False
@@ -174,10 +186,12 @@ if __name__ == "__main__":
             apple_spawn = True
             screen.fill(white)
 
+            #---Отрисовка змейки, яблок---
             for position in snake:
                 pygame.draw.rect(screen, collor_snake, pygame.Rect(position[0], position[1], 10, 10))
                 pygame.draw.rect(screen, collor_apple, pygame.Rect(apple_position[0], apple_position[1], 10, 10))
 
+            #---Проверка границ---
             if snake_position[0] < 0 or snake_position[0] > WIDTH - 10:
                 game_over()
             if snake_position[1] < 0 or snake_position[1] > HEIGHT - 10:
