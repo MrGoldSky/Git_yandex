@@ -45,7 +45,7 @@ def new_game():
         )
         game_over_screen = game_over_surface.get_rect()
         game_over_screen.midtop = (WIDTH / 2, HEIGHT / 4)
-        display_screen.blit(game_over_surface, game_over_screen)
+        screen.blit(game_over_surface, game_over_screen)
         pygame.display.flip()
 
         while not game_run:
@@ -61,26 +61,34 @@ def new_game():
         print(e)
 
 
-def display_score():  
-    score_font_style = pygame.font.SysFont("Git_yandex/Project_pygame/font/NeueMachina-Light.ttf", 35)
-    score_surface = score_font_style.render("Очки: " + str(score), True, black)
-    score_rectangle = score_surface.get_rect()
-    display_screen.blit(score_surface, score_rectangle)
+def update_score():
+    try:
+        score_font_style = pygame.font.SysFont("Git_yandex/Project_pygame/font/NeueMachina-Light.ttf", 35)
+        score_surface = score_font_style.render(f"Вы набрали {score} очков", True, black)
+        score_rectangle = score_surface.get_rect()
+        screen.blit(score_surface, score_rectangle)
+    except BaseException as e:
+        print("Ошибка показа очков")
+        print(e)
 
 
 def game_over():
-    game_over_font = pygame.font.SysFont("Git_yandex/Project_pygame/font/NeueMachina-Light.ttf", 50)
-    game_over_surface = game_over_font.render(
-        "Очки: " + str(score), True, collor_score
-    )
-    game_over_screen = game_over_surface.get_rect()
-    game_over_screen.midtop = (WIDTH / 2, HEIGHT / 4)
-    display_screen.blit(game_over_surface, game_over_screen)
-    pygame.display.flip()
-    time.sleep(2)
-    pygame.quit()
-    insert_score(score)
-    quit()
+    try:
+        game_over_font = pygame.font.SysFont("Git_yandex/Project_pygame/font/NeueMachina-Light.ttf", 50)
+        game_over_surface = game_over_font.render(
+            f"Вы набрали {score} очков", True, collor_score
+        )
+        game_over_screen = game_over_surface.get_rect()
+        game_over_screen.midtop = (WIDTH / 2, HEIGHT / 4)
+        screen.blit(game_over_surface, game_over_screen)
+        pygame.display.flip()
+        time.sleep(2)
+        pygame.quit()
+        insert_score(score)
+        quit()
+    except BaseException as e:
+        print("Ошибка конца игры")
+        print("e")
 
 
 def connect_to_db():
@@ -103,82 +111,85 @@ def insert_score(score):
         con.commit()
         con.close()
         return result
-    except BaseException as exception:
+    except BaseException as e:
         print("Ошибка заполнения БД (score, time)")
-        print(exception)
+        print(e)
 
 
 if __name__ == "__main__":
     pygame.init()
-    display_screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Змейка")
     game_clock = pygame.time.Clock()
 
     new_game()
-
-    while game_run:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                game_run = False
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
-                    now_direction = "UP"
-                if event.key == pygame.K_DOWN:
-                    now_direction = "DOWN"
-                if event.key == pygame.K_LEFT:
-                    now_direction = "LEFT"
-                if event.key == pygame.K_RIGHT:
-                    now_direction = "RIGHT"
-
-        if now_direction == "UP" and last_direction != "DOWN":
-            last_direction = "UP"
-        if now_direction == "DOWN" and last_direction != "UP":
-            last_direction = "DOWN"
-        if now_direction == "LEFT" and last_direction != "RIGHT":
-            last_direction = "LEFT"
-        if now_direction == "RIGHT" and last_direction != "LEFT":
-            last_direction = "RIGHT"
-
-        if last_direction == "UP":
-            snake_position[1] -= 10
-        if last_direction == "DOWN":
-            snake_position[1] += 10
-        if last_direction == "LEFT":
-            snake_position[0] -= 10
-        if last_direction == "RIGHT":
-            snake_position[0] += 10
-
-        snake.insert(0, list(snake_position))
-        if snake_position[0] == apple_position[0] and snake_position[1] == apple_position[1]:
-            score += 1
-            apple_spawn = False
-            snake_speed += 0.2
-        else:
-            snake.pop()
-
-        if not apple_spawn:
-            apple_position = [
-                randrange(1, (WIDTH // 10)) * 10,
-                randrange(1, (HEIGHT // 10)) * 10
-            ]
-        apple_spawn = True
-        display_screen.fill(white)
-
-        for position in snake:
-            pygame.draw.rect(display_screen, collor_snake, pygame.Rect(position[0], position[1], 10, 10))
-            pygame.draw.rect(display_screen, collor_apple, pygame.Rect(apple_position[0], apple_position[1], 10, 10))
-
-        if snake_position[0] < 0 or snake_position[0] > WIDTH - 10:
-            game_over()
-        if snake_position[1] < 0 or snake_position[1] > HEIGHT - 10:
-            game_over()
-
-        for block in snake[1:]:
-            if snake_position[0] == block[0] and snake_position[1] == block[1]:
-                game_over()
-        display_score()
-        pygame.display.update()
-        game_clock.tick(snake_speed)
     
+    try:
+        while game_run:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    game_run = False
+
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_UP:
+                        now_direction = "UP"
+                    if event.key == pygame.K_DOWN:
+                        now_direction = "DOWN"
+                    if event.key == pygame.K_LEFT:
+                        now_direction = "LEFT"
+                    if event.key == pygame.K_RIGHT:
+                        now_direction = "RIGHT"
+
+            if now_direction == "UP" and last_direction != "DOWN":
+                last_direction = "UP"
+            if now_direction == "DOWN" and last_direction != "UP":
+                last_direction = "DOWN"
+            if now_direction == "LEFT" and last_direction != "RIGHT":
+                last_direction = "LEFT"
+            if now_direction == "RIGHT" and last_direction != "LEFT":
+                last_direction = "RIGHT"
+
+            if last_direction == "UP":
+                snake_position[1] -= 10
+            if last_direction == "DOWN":
+                snake_position[1] += 10
+            if last_direction == "LEFT":
+                snake_position[0] -= 10
+            if last_direction == "RIGHT":
+                snake_position[0] += 10
+
+            snake.insert(0, list(snake_position))
+            if snake_position[0] == apple_position[0] and snake_position[1] == apple_position[1]:
+                score += 1
+                apple_spawn = False
+                snake_speed += 0.2
+            else:
+                snake.pop()
+
+            if not apple_spawn:
+                apple_position = [
+                    randrange(1, (WIDTH // 10)) * 10,
+                    randrange(1, (HEIGHT // 10)) * 10
+                ]
+            apple_spawn = True
+            screen.fill(white)
+
+            for position in snake:
+                pygame.draw.rect(screen, collor_snake, pygame.Rect(position[0], position[1], 10, 10))
+                pygame.draw.rect(screen, collor_apple, pygame.Rect(apple_position[0], apple_position[1], 10, 10))
+
+            if snake_position[0] < 0 or snake_position[0] > WIDTH - 10:
+                game_over()
+            if snake_position[1] < 0 or snake_position[1] > HEIGHT - 10:
+                game_over()
+
+            for block in snake[1:]:
+                if snake_position[0] == block[0] and snake_position[1] == block[1]:
+                    game_over()
+            update_score()
+            pygame.display.update()
+            game_clock.tick(snake_speed)
+    except BaseException as e:
+        print("Ошибка в главном цикле")
+        print("e")
     pygame.quit()
