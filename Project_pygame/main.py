@@ -39,7 +39,7 @@ game_run = False
 def new_game():
     try:
         global game_run
-        game_over_font = pygame.font.SysFont("times new roman", 20)
+        game_over_font = pygame.font.SysFont("Git_yandex/Project_pygame/font/NeueMachina-Light.ttf", 20)
         game_over_surface = game_over_font.render(
             "Нажмите ENTER, чтобы начать", True, pygame.Color(255, 255, 255)
         )
@@ -62,14 +62,14 @@ def new_game():
 
 
 def display_score():  
-    score_font_style = pygame.font.SysFont("times new roman", 35)
+    score_font_style = pygame.font.SysFont("Git_yandex/Project_pygame/font/NeueMachina-Light.ttf", 35)
     score_surface = score_font_style.render("Очки: " + str(score), True, black)
     score_rectangle = score_surface.get_rect()
     display_screen.blit(score_surface, score_rectangle)
 
 
 def game_over():
-    game_over_font = pygame.font.SysFont("times new roman", 50)
+    game_over_font = pygame.font.SysFont("Git_yandex/Project_pygame/font/NeueMachina-Light.ttf", 50)
     game_over_surface = game_over_font.render(
         "Очки: " + str(score), True, collor_score
     )
