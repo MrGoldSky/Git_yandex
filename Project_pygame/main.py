@@ -145,10 +145,23 @@ def insert_score(score):
 
 #---Генерация яблок---
 def apple_generate():
-    apple.append([
+    cycles = 0
+    coordinates = [
         randint(1, (WIDTH // 10)) * 10,
         randint(1, (HEIGHT // 10)) * 10
-        ])
+        ]
+    if len(apple) < 2400:
+        while coordinates in snake or coordinates in apple:
+            cycles += 1
+            if cycles < 100:
+                coordinates = [
+                    randint(1, (WIDTH // 10)) * 10,
+                    randint(1, (HEIGHT // 10)) * 10
+                    ]
+            else:
+                break
+        else:
+            apple.append(coordinates)
 
 
 #---Ранер---
