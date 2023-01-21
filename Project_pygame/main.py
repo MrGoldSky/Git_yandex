@@ -204,8 +204,10 @@ if __name__ == "__main__":
                 if snake_position[0] == apple_position[0] and snake_position[1] == apple_position[1]:
                     score += 1
                     apple_spawn = False
-                    snake_speed += 0.2
-                    apple_count += 1
+                    if (len(snake) - 1) % 3 == 0:
+                        if len(apple) <= apple_count:
+                            apple_count += 1
+                            snake_speed += 0.5
                     add_len = True
                     del apple[apple.index(apple_position)]
             if not add_len:
