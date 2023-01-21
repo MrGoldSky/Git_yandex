@@ -2,7 +2,7 @@
 import pygame
 import time
 from time import strftime, gmtime
-from random import randrange
+from random import randint
 import sqlite3
 
 #---Константы---
@@ -25,11 +25,9 @@ snake = [
     [70, 50]
     ]
 
-apple_position = [
-    randrange(1, (WIDTH // 10)) * 10,
-    randrange(1, (HEIGHT // 10)) * 10
-    ]
+apple = []
 apple_spawn = True
+apple_count = 1
 
 last_direction = "DOWN"
 now_direction = last_direction
@@ -93,7 +91,7 @@ def game_over():
         quit()
     except BaseException as e:
         print("Ошибка конца игры")
-        print("e")
+        print(e)
 
 
 #---Подключение к базе данных---
@@ -123,15 +121,24 @@ def insert_score(score):
         print(e)
 
 
+#---Генерация яблок---
+def apple_generate():
+    apple.append([
+        randint(1, (WIDTH // 10)) * 10,
+        randint(1, (HEIGHT // 10)) * 10
+        ])
+
+
 #---Ранер---
 if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Змейка")
     game_clock = pygame.time.Clock()
+    apple_generate()
 
     new_game()
-    
+
     try:
         while game_run:
 
@@ -170,25 +177,31 @@ if __name__ == "__main__":
                 snake_position[0] += 10
             snake.insert(0, list(snake_position))
 
-            #---Поедание яблок, ускорение змейки---
-            if snake_position[0] == apple_position[0] and snake_position[1] == apple_position[1]:
-                score += 1
-                apple_spawn = False
-                snake_speed += 0.2
-            else:
+            #---Поедание яблок, ускорение змейки, добавление количества яблок---
+            add_len = False
+            for apple_position in apple:
+                if snake_position[0] == apple_position[0] and snake_position[1] == apple_position[1]:
+                    score += 1
+                    apple_spawn = False
+                    snake_speed += 0.2
+                    apple_count += 1
+                    add_len = True
+                    del apple[apple.index(apple_position)]
+            if not add_len:
                 snake.pop()
 
             if not apple_spawn:
-                apple_position = [
-                    randrange(1, (WIDTH // 10)) * 10,
-                    randrange(1, (HEIGHT // 10)) * 10
-                ]
+                for count in range(apple_count):
+                    apple_generate()
             apple_spawn = True
             screen.fill(white)
 
-            #---Отрисовка змейки, яблок---
+            #---Отрисовка змейки---
             for position in snake:
                 pygame.draw.rect(screen, collor_snake, pygame.Rect(position[0], position[1], 10, 10))
+            
+            #---Отрисовка яблок---
+            for apple_position in apple:
                 pygame.draw.rect(screen, collor_apple, pygame.Rect(apple_position[0], apple_position[1], 10, 10))
 
             #---Проверка границ---
@@ -205,5 +218,5 @@ if __name__ == "__main__":
             game_clock.tick(snake_speed)
     except BaseException as e:
         print("Ошибка в главном цикле")
-        print("e")
+        print(e)
     pygame.quit()
