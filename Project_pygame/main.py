@@ -5,7 +5,7 @@ from time import strftime, gmtime
 from random import randrange
 import sqlite3
 
-#---Сохранение ---
+#---Константы---
 WIDTH = 500
 HEIGHT = 500
 
