@@ -15,7 +15,7 @@ collor_score = pygame.Color(65, 105, 225)
 collor_snake = pygame.Color(3, 192, 60)
 collor_apple = pygame.Color(196, 48, 43)
 
-snake_speed = 10
+snake_speed = 7
 snake_position = [100, 50]
 
 snake = [
@@ -34,6 +34,18 @@ now_direction = last_direction
 
 score = 0
 game_run = False
+
+
+#---Подключение к базе данных---
+def connect_to_db():
+    try:
+        con = sqlite3.connect("Git_yandex/Project_pygame/base/db.sqlite")
+        cur = con.cursor()
+        return con, cur
+    except BaseException as e:
+        print()
+        print("Ошибка подключения к БД")
+        print(e)
 
 
 #---Создание новой игры, стартовое окно---
@@ -57,8 +69,26 @@ def new_game():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
                         game_run = True
+                        apple_generate()
     except BaseException as e:
+        print()
         print("Ошибка начала игры")
+        print(e)
+
+
+#---Показ лучшего результата---
+def update_record():
+    try:
+        con, cur = connect_to_db()
+        record = cur.execute(f"""SELECT max(result) from pygame
+                             """).fetchone()[0]
+        record_score_font_style = pygame.font.SysFont("Git_yandex/Project_pygame/font/NeueMachina-Light.ttf", 35)
+        record_score_surface = record_score_font_style.render(f"Максимум очков {record}", True, black)
+        record_score_coordinates = [record_score_surface.get_rect()[0] + 254, record_score_surface.get_rect()[1]]
+        screen.blit(record_score_surface, record_score_coordinates)
+    except BaseException as e:
+        print()
+        print("Ошибка показа лучшего результата")
         print(e)
 
 
@@ -70,6 +100,7 @@ def update_score():
         score_rectangle = score_surface.get_rect()
         screen.blit(score_surface, score_rectangle)
     except BaseException as e:
+        print()
         print("Ошибка показа очков")
         print(e)
 
@@ -90,18 +121,8 @@ def game_over():
         insert_score(score)
         quit()
     except BaseException as e:
+        print()
         print("Ошибка конца игры")
-        print(e)
-
-
-#---Подключение к базе данных---
-def connect_to_db():
-    try:
-        con = sqlite3.connect("Git_yandex/Project_pygame/base/db.sqlite")
-        cur = con.cursor()
-        return con, cur
-    except BaseException as e:
-        print("Ошибка подключения к БД")
         print(e)
 
 
@@ -117,6 +138,7 @@ def insert_score(score):
         con.close()
         return result
     except BaseException as e:
+        print()
         print("Ошибка заполнения БД (score, time)")
         print(e)
 
@@ -135,8 +157,7 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Змейка")
     game_clock = pygame.time.Clock()
-    apple_generate()
-
+    
     new_game()
 
     try:
@@ -213,10 +234,14 @@ if __name__ == "__main__":
             for block in snake[1:]:
                 if snake_position[0] == block[0] and snake_position[1] == block[1]:
                     game_over()
+
             update_score()
+            update_record()
+
             pygame.display.update()
             game_clock.tick(snake_speed)
     except BaseException as e:
+        print()
         print("Ошибка в главном цикле")
         print(e)
     pygame.quit()
