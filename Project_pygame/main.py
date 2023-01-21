@@ -11,9 +11,9 @@ HEIGHT = 500
 
 black = pygame.Color(0, 0, 0)
 white = pygame.Color(255, 255, 255)
-collor_score = pygame.Color(220, 20, 60)
-collor_snake = pygame.Color(124, 252, 0)
-collor_apple = pygame.Color(255, 0, 0)
+collor_score = pygame.Color(65, 105, 225)
+collor_snake = pygame.Color(3, 192, 60)
+collor_apple = pygame.Color(196, 48, 43)
 
 snake_speed = 10
 snake_position = [100, 50]
