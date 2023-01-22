@@ -15,24 +15,6 @@ collor_score = pygame.Color(65, 105, 225)
 collor_snake = pygame.Color(3, 192, 60)
 collor_apple = pygame.Color(196, 48, 43)
 
-snake_speed = 7
-snake_position = [100, 50]
-
-snake = [
-    [100, 50],
-    [90, 50],
-    [80, 50],
-    [70, 50]
-    ]
-
-apple = []
-apple_spawn = True
-apple_count = 1
-
-last_direction = "DOWN"
-now_direction = last_direction
-
-score = 0
 game_run = False
 
 
@@ -50,8 +32,28 @@ def connect_to_db():
 
 #---Создание новой игры, стартовое окно---
 def new_game():
+    global game_run, snake_speed, snake_position, apple, apple_spawn
+    global apple_count, last_direction, now_direction, snake, score
+    snake_speed = 7
+    snake_position = [100, 50]
+
+    snake = [
+        [100, 50],
+        [90, 50],
+        [80, 50],
+        [70, 50]
+        ]
+
+    apple = []
+    apple_spawn = True
+    apple_count = 1
+
+    last_direction = "DOWN"
+    now_direction = last_direction
+    apple_generate()
+    score = 0
+    
     try:
-        global game_run
         game_over_font = pygame.font.SysFont("Git_yandex/Project_pygame/font/NeueMachina-Light.ttf", 20)
         game_over_surface = game_over_font.render(
             "Нажмите ENTER, чтобы начать", True, pygame.Color(255, 255, 255)
@@ -69,7 +71,6 @@ def new_game():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
                         game_run = True
-                        apple_generate()
     except BaseException as e:
         print()
         print("Ошибка начала игры")
@@ -190,6 +191,11 @@ if __name__ == "__main__":
                         now_direction = "LEFT"
                     if event.key == pygame.K_RIGHT:
                         now_direction = "RIGHT"
+                    if event.key == pygame.K_KP_MINUS:
+                        insert_score(score)
+                        update_score()
+                        new_game()
+                        print("Рестарт")
 
             #---Движение змеи---
             if now_direction == "UP" and last_direction != "DOWN":
@@ -259,4 +265,5 @@ if __name__ == "__main__":
         print()
         print("Ошибка в главном цикле")
         print(e)
+    insert_score(score)
     pygame.quit()
