@@ -56,7 +56,7 @@ def new_game():
     try:
         game_over_font = pygame.font.SysFont("Git_yandex/Project_pygame/font/NeueMachina-Light.ttf", 20)
         game_over_surface = game_over_font.render(
-            "Нажмите ENTER, чтобы начать", True, pygame.Color(255, 255, 255)
+            "Привет, нажми ENTER, чтобы начать!", True, pygame.Color(255, 255, 255)
         )
         game_over_screen = game_over_surface.get_rect()
         game_over_screen.midtop = (WIDTH / 2, HEIGHT / 4)
