@@ -38,9 +38,9 @@ toponym_longitude, toponym_lattitude = toponym_coodrinates.split(" ")
 size = get_size(json_response)
 map_params = {
     "ll": ",".join([toponym_longitude, toponym_lattitude]),
-    "spn": ",".join(size[0], size[1]),
+    "spn": ",".join(size),
     "l": "map",
-    "pt": ",".join(toponym_coodrinates)
+    "pt": ",".join([toponym_longitude, toponym_lattitude])
 }
 
 map_api_server = "http://static-maps.yandex.ru/1.x/"
