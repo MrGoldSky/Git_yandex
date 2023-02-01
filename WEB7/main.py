@@ -17,10 +17,17 @@ class welcome(QWidget):
         super().__init__()
         uic.loadUi('Git_yandex/WEB7/untitled.ui', self)
         self.pushButton.clicked.connect(self.search)
+        self.pushButton_2.clicked.connect(self.reset)
 
     def search(self):
         global text
         text = self.textEdit.toPlainText()
+        ex2.getImage()
+        ex2.show_image()
+
+    def reset(self):
+        global text
+        text = ""
         ex2.getImage()
         ex2.show_image()
 
@@ -74,7 +81,6 @@ class Main_frame(QWidget):
             pass
         else:
             text = "Пенза"
-        
         geocoder_request = f"http://geocode-maps.yandex.ru/1.x/?apikey=40d1649f-0493-4b70-98ba-98533de7710b&geocode={text}, 1&format=json"
         response = requests.get(geocoder_request)
         if response:
@@ -97,6 +103,12 @@ class Main_frame(QWidget):
         with open(self.map_file, "wb") as file:
             file.write(response.content)
         file.close()
+
+    def reset(self):
+        global text
+        text = "Пенза"
+        self.getImage()
+        self.show_image()
 
     def initUI(self):
         self.setGeometry(100, 100, *SCREEN_SIZE)
