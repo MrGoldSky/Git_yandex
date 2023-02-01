@@ -89,6 +89,7 @@ class Main_frame(QWidget):
             toponym_address = toponym["metaDataProperty"]["GeocoderMetaData"]["text"]
             x = float(toponym["Point"]["pos"].split()[0])
             y = float(toponym["Point"]["pos"].split()[1])
+            ex.lineEdit.setText(toponym_address)
         map_request = f"http://static-maps.yandex.ru/1.x/?ll={x + self.x * (15 / self.z)},{y + self.y * (15 / self.z)}&z={self.z}&l={self.l}&pt={x},{y}"
         response = requests.get(map_request)
 
