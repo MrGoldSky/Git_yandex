@@ -15,7 +15,7 @@ text = "Пенза"
 class welcome(QWidget):
     def __init__(self):
         super().__init__()
-        uic.loadUi('Git_yandex/WEB7/untitled.ui', self)
+        uic.loadUi('WEB7/untitled.ui', self)
         self.pushButton.clicked.connect(self.search)
 
     def search(self):
