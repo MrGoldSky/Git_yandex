@@ -96,11 +96,24 @@
      <x>120</x>
      <y>420</y>
      <width>301</width>
-     <height>31</height>
+     <height>61</height>
     </rect>
    </property>
    <property name="readOnly">
     <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="checkBox">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>440</y>
+     <width>111</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Добавить индекс</string>
    </property>
   </widget>
  </widget>

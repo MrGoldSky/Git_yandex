@@ -10,7 +10,7 @@ from PyQt5.QtCore import Qt
 
 SCREEN_SIZE = [600, 450]
 
-text = "Пенза"
+text = "Пенза Москвовская 115"
 
 class welcome(QWidget):
     def __init__(self):
@@ -80,16 +80,20 @@ class Main_frame(QWidget):
         if len(text) > 1:
             pass
         else:
-            text = "Пенза"
+            text = "Пенза Москвовская 115"
         geocoder_request = f"http://geocode-maps.yandex.ru/1.x/?apikey=40d1649f-0493-4b70-98ba-98533de7710b&geocode={text}, 1&format=json"
         response = requests.get(geocoder_request)
         if response:
             json_response = response.json()
             toponym = json_response["response"]["GeoObjectCollection"]["featureMember"][0]["GeoObject"]
             toponym_address = toponym["metaDataProperty"]["GeocoderMetaData"]["text"]
+            if ex.checkBox.isChecked() is True:
+                index = toponym["metaDataProperty"]["GeocoderMetaData"]["Address"]["postal_code"]
+                ex.lineEdit.setText(toponym_address + " " + index)
+            else:
+                ex.lineEdit.setText(toponym_address)
             x = float(toponym["Point"]["pos"].split()[0])
             y = float(toponym["Point"]["pos"].split()[1])
-            ex.lineEdit.setText(toponym_address)
         map_request = f"http://static-maps.yandex.ru/1.x/?ll={x + self.x * (15 / self.z)},{y + self.y * (15 / self.z)}&z={self.z}&l={self.l}&pt={x},{y}"
         response = requests.get(map_request)
 
@@ -107,7 +111,7 @@ class Main_frame(QWidget):
 
     def reset(self):
         global text
-        text = "Пенза"
+        text = "Пенза Москвовская 115"
         self.getImage()
         self.show_image()
 

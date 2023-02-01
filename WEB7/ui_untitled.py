@@ -40,9 +40,12 @@ class Ui_Form(object):
         self.label_2.setGeometry(QtCore.QRect(30, 420, 91, 31))
         self.label_2.setObjectName("label_2")
         self.lineEdit = QtWidgets.QLineEdit(Form)
-        self.lineEdit.setGeometry(QtCore.QRect(120, 420, 301, 31))
+        self.lineEdit.setGeometry(QtCore.QRect(120, 420, 301, 61))
         self.lineEdit.setReadOnly(True)
         self.lineEdit.setObjectName("lineEdit")
+        self.checkBox = QtWidgets.QCheckBox(Form)
+        self.checkBox.setGeometry(QtCore.QRect(10, 440, 111, 31))
+        self.checkBox.setObjectName("checkBox")
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -54,3 +57,4 @@ class Ui_Form(object):
         self.pushButton_2.setText(_translate("Form", "Сброс поискового результата"))
         self.label.setText(_translate("Form", "Введите адресс:"))
         self.label_2.setText(_translate("Form", "Полный адресс:"))
+        self.checkBox.setText(_translate("Form", "Добавить индекс"))
