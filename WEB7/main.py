@@ -15,7 +15,7 @@ text = "Пенза"
 class welcome(QWidget):
     def __init__(self):
         super().__init__()
-        uic.loadUi('WEB7/untitled.ui', self)
+        uic.loadUi('Git_yandex/WEB7/untitled.ui', self)
         self.pushButton.clicked.connect(self.search)
 
     def search(self):
@@ -83,7 +83,7 @@ class Main_frame(QWidget):
             toponym_address = toponym["metaDataProperty"]["GeocoderMetaData"]["text"]
             x = float(toponym["Point"]["pos"].split()[0])
             y = float(toponym["Point"]["pos"].split()[1])
-        map_request = f"http://static-maps.yandex.ru/1.x/?ll={x + self.x * (15 / self.z)},{y + self.y * (15 / self.z)}&z={self.z}&l={self.l}"
+        map_request = f"http://static-maps.yandex.ru/1.x/?ll={x + self.x * (15 / self.z)},{y + self.y * (15 / self.z)}&z={self.z}&l={self.l}&pt={x},{y}"
         response = requests.get(map_request)
 
         if not response:
