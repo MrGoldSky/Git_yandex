@@ -18,7 +18,7 @@ async def dice(update, context):
                       ["/twenty", "/back"]]
     markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False)
     await update.message.reply_text(
-        "Привет!",
+        "Dices: ",
         reply_markup=markup
     )
 
@@ -52,8 +52,23 @@ async def twenty(update, context):
         reply_markup=markup
     )
 
+async def timer(update, context):
+    reply_keyboard = [['/timer30', '/timer1'],
+                      ["/timer5", "/back"]]
+    markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False)
+    await update.message.reply_text(
+        f"Timers: ",
+        reply_markup=markup
+    )
+
 
 async def timer30(update, context):
+    pass
+
+async def timer1(update, context):
+    pass
+
+async def timer5(update, context):
     pass
 
 
