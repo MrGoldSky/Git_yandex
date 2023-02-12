@@ -14,7 +14,13 @@
         <h1>Миссия Колонизация Марса</h1>
         <h4>И на Марсе будут яблони цвести!</h4>
     </div>
-    {% block content %}{% endblock %}
+    {% if 'no' not in simulator %}
+        {% block content %}{% endblock %}
+    {% endif %}
+
+    {% if 'no' not in profi %}
+        {% block list %} {% endblock %}
+    {% endif %}
 
 </body>
 </html>

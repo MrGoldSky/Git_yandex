@@ -13,11 +13,21 @@ def index(title):
 def traning(prof):
     param = {}
     param['simulator'] = {prof}
+    param['profi'] = "no"
     return render_template('index.html', **param)
 
 @app.route('/')
 def first():
     return "<h1>Миссия Колонизация Марса</h1>"
+
+
+@app.route('/list_prof/<listy>')
+def list_prof(listy):
+    param = {}
+    param['list'] = {listy}
+    param['simulator'] = "no"
+    param['profi'] = ["Программист", "Инжиенер", "Врачь", "Повар", "Клоун", "Зоолог", "Кот", "Кошечка"]
+    return render_template('index.html', **param)
 
 
 @app.route('/promotion')
