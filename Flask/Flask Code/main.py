@@ -1,16 +1,23 @@
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
+@app.route('/<title>')
+@app.route('/index<title>')
+def index(title):
+    param = {}
+    param['title'] = f"{title}"
+    return render_template('index.html', **param)
+
+@app.route("/training/<prof>")
+def traning(prof):
+    param = {}
+    param['simulator'] = {prof}
+    return render_template('index.html', **param)
 
 @app.route('/')
 def first():
     return "<h1>Миссия Колонизация Марса</h1>"
-
-
-@app.route('/index')
-def second():
-    return "<h1>И на Марсе будут яблони цвести!</h1>"
 
 
 @app.route('/promotion')
