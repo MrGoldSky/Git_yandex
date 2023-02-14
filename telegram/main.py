@@ -2,6 +2,7 @@ from telegram.ext import Application, MessageHandler, filters, CommandHandler
 from telegram import ReplyKeyboardMarkup
 from config import BOT_TOKEN
 import random
+import time
 
 
 async def start(update, context):
@@ -53,8 +54,8 @@ async def twenty(update, context):
     )
 
 async def timer(update, context):
-    reply_keyboard = [['/timer30', '/timer1'],
-                      ["/timer5", "/back"]]
+    reply_keyboard = [['/30sec', '/one_minute'],
+                      ["/five_minute", "/back"]]
     markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False)
     await update.message.reply_text(
         f"Timers: ",
@@ -63,13 +64,40 @@ async def timer(update, context):
 
 
 async def timer30(update, context):
-    pass
+    reply_keyboard = [['/close'],
+                      []]
+    markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False)
+    await update.message.reply_text(
+        f"Засёк: 30 секунд",
+    )
+    time.sleep(30)
+    await update.message.reply_text(
+        f"30 секунд истекло", reply_markup=markup
+    )
 
 async def timer1(update, context):
-    pass
+    reply_keyboard = [['/close'],
+                      []]
+    markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False)
+    await update.message.reply_text(
+        f"Засёк: 1 минуту",
+    )
+    time.sleep(60)
+    await update.message.reply_text(
+        f"1 минута истекла", reply_markup=markup
+    )
 
 async def timer5(update, context):
-    pass
+    reply_keyboard = [['/close'],
+                      []]
+    markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False)
+    await update.message.reply_text(
+        f"Засёк: 5 минут",
+    )
+    time.sleep(60 * 5)
+    await update.message.reply_text(
+        f"5 минут истекли", reply_markup=markup
+    )
 
 
 back = start
@@ -87,8 +115,7 @@ def main():
     application.add_handler(CommandHandler("one_minute", timer1))
     application.add_handler(CommandHandler("five_minute", timer5))
     application.add_handler(CommandHandler("back", back))
-    
-    
+    application.add_handler(CommandHandler("close", start))
     application.run_polling()
 
 
