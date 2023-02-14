@@ -111,6 +111,46 @@ def promotion_image():
                   </html>"""
 
 
+@app.route('/carousel')
+def carousel():
+      return f'''<!doctype html>
+                      <html lang="en">
+                        <head>
+                          <meta charset="utf-8">
+                          <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                          <link rel="stylesheet"
+                          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+                          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+                          crossorigin="anonymous">
+                          
+                          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+                          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+                          integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" 
+                          crossorigin="anonymous"></script>
+                          
+                          <link rel="stylesheet" href="/static/css/style.css" />
+                          <title>Карусель</title>
+                        </head>
+                        <body>
+                          <div id="Carousel" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner">
+                              <div class="carousel-item active">
+                                <img class="d-block w-50" src="/static/img/mars1.jpg" alt="mars1">
+                              </div>
+                              <div class="carousel-item">
+                                <img class="d-block w-50" src="/static/img/mars2.jpg" alt="mars2">
+                              </div>
+                              <div class="carousel-item">
+                                <img class="d-block w-50" src="/static/img/mars3.jpg" alt="mars3">
+                              </div>
+                              <div class="carousel-item">
+                                <img class="d-block w-50" src="/static/img/mars4.jpg" alt="mars4">
+                              </div>
+                            </div>
+                        </div>
+                        </body>
+                      </html>'''
+
 @app.route('/form_sample', methods=['POST', 'GET'])
 def form_sample():
     if request.method == 'GET':
@@ -214,5 +254,6 @@ def load_photo():
       f = request.files['file']
       f.save("image.png")
       return "Форма отправлена"
+
 if __name__ == '__main__':
     app.run(port=8080, host='127.0.0.1')

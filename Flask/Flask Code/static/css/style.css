@@ -12,6 +12,13 @@ form.login_form{
     margin-bottom: 5px
 }
 
+.d-block{
+    height: 600px;
+    width: auto;
+    margin-left: auto;
+    margin-right:auto;
+}
+
 .form_h1{
     margin-left: auto;
     margin-right: auto;
