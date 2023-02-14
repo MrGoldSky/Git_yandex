@@ -157,15 +157,7 @@ def form_sample():
                             </div>
                           </body>
                         </html>'''
-    elif request.method == 'POST':
-        print(request.form['email'])
-        print(request.form['password'])
-        print(request.form['class'])
-        print(request.form['file'])
-        print(request.form['about'])
-        print(request.form['accept'])
-        print(request.form['sex'])
-        return "Форма отправлена"
+
 
 if __name__ == '__main__':
     app.run(port=8080, host='127.0.0.1')
