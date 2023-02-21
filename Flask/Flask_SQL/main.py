@@ -6,7 +6,7 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
 
 def main():
-    db_session.global_init("db/blogs.db")
+    db_session.global_init("Flask/Flask_SQL/db/blogs.db")
     app.run()
 
 
